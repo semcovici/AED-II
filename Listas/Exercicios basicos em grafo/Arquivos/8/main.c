@@ -2,12 +2,11 @@
 #include <stdlib.h>
 
 #define V 5
+#define vazio 0
 
 typedef int bool;
 #define true 1
 #define false 0
-
-#define vazio 0
 
 typedef struct s{
     int p;//peso
@@ -19,6 +18,7 @@ typedef struct z{
     NO* inicio;    
 } VERTICE;
 
+/*busca a aresta que conecta i e j*/
 NO* buscaArestaGLL(VERTICE* g, int i, int j, NO* ant){
     ant = NULL;
     NO* p = g[i].inicio;
@@ -30,21 +30,6 @@ NO* buscaArestaGLL(VERTICE* g, int i, int j, NO* ant){
     }
 
     return NULL;
-}
-
-void inicializarGM(int g[V][V]){
-    int i,j;
-    for(i=0; i<V; i++)
-        for(j=0; j<V; j++)
-            g[i][j] = vazio;
-}
-
-void inicializarGLL(VERTICE* g){
-    
-    int i;
-    for(i=0; i<V; i++){
-        g[i].inicio = NULL;
-    }
 }
 
 bool inserirArestaGLL(VERTICE* g, int i, int j, int peso){
@@ -63,6 +48,55 @@ bool inserirArestaGLL(VERTICE* g, int i, int j, int peso){
 	return true;
 }
 
+void imprimeGLL(VERTICE* g){
+
+    int i;
+    for(i=0; i<V; i++){
+
+        NO* p = g[i].inicio;
+        printf("VERTICE %i\n", i);
+        while(p){
+
+            printf("%i\n", p->v);
+            p = p->prox;
+        }
+    }
+}
+
+void inicializarGLL(VERTICE* g){
+    
+    int i;
+    for(i=0; i<V; i++){
+        g[i].inicio = NULL;
+    }
+}
+
+void imprimeGM(int g[V][V]){
+    int i,j;
+
+    for(i=0; i<V; i++)
+        for(j=0;j<V; j++)
+                printf ("\nElemento[%d][%d] = %d\n", i, j, g[i][j]);
+}
+
+void inicializarGM(int g[V][V]){
+    int i,j;
+    for(i=0; i<V; i++)
+        for(j=0; j<V; j++)
+            g[i][j] = 0;
+}
+
+void inserirArestaGM(int g[V][V], int i, int j, int peso){
+    g[i][j] = peso;
+}
+
+void grafoCompletasso(int g[V][V]){
+    int i,j;
+    for(i=0; i<V; i++)
+        for(j=0; j<V; j++)
+            g[i][j] = 1;
+}
+
 void transformaGMemLL(int m[V][V], VERTICE* g){
 
     int i, j;
@@ -75,7 +109,6 @@ void transformaGMemLL(int m[V][V], VERTICE* g){
     }
 }
 
-
 //Arestas de g1 estao em g2?
 bool subGrafo(VERTICE* g1, VERTICE* g2){
     int n1;
@@ -86,7 +119,7 @@ bool subGrafo(VERTICE* g1, VERTICE* g2){
             int i = n1; 
             int j = p1->v;
             NO* ant;
-            NO* aux = buscaAresta(g2,i,j,&ant);
+            NO* aux = buscaArestaGLL(g2,i,j,&ant);
             if(!aux || aux -> p != p1 -> p) return false;
 
             p1 = p1->prox;
@@ -95,24 +128,31 @@ bool subGrafo(VERTICE* g1, VERTICE* g2){
     return true;
 }
 
-
-
-
 int main(){
 
-    VERTICE* g = (VERTICE*) malloc(sizeof(VERTICE)*V);
-    inicializarGLL(g);
+    VERTICE* g1 = (VERTICE*)malloc(sizeof(VERTICE)*V);
+    inicializarGLL(g1);
+
+    inserirArestaGLL(g1, 1, 1, 10);
+    inserirArestaGLL(g1, 2, 1, 22);
+    inserirArestaGLL(g1, 3, 1, 33);
 
     int m[V][V];
     inicializarGM(m);
 
-    VERTICE* mLL = (VERTICE*)malloc(sizeof(VERTICE)*V);
-    transformaGMemLL(m, mLL);
+    inserirArestaGM(m, 1, 1, 10);
+    inserirArestaGM(m, 2, 1, 22);
+    inserirArestaGM(m, 3, 1, 33);
 
+    VERTICE* g2 = (VERTICE*)malloc(sizeof(VERTICE)*V);
+    inicializarGLL(g2);
 
-    if(subGrafo(g, mLL)){
+    transformaGMemLL(m, g2);
+
+    if(subGrafo(g1, g2)){
         puts("Eh subgrafo");
     }
     else puts("Nao eh subgrafo");
     
+    return 0;
 }
