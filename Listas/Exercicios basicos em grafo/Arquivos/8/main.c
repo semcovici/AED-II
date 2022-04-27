@@ -56,8 +56,7 @@ void imprimeGLL(VERTICE* g){
         NO* p = g[i].inicio;
         printf("VERTICE %i\n", i);
         while(p){
-
-            printf("%i\n", p->v);
+            printf("%i-peso: %i\n", p->v, p->p);
             p = p->prox;
         }
     }
@@ -111,8 +110,9 @@ void transformaGMemLL(int m[V][V], VERTICE* g){
 
 //Arestas de g1 estao em g2?
 bool subGrafo(VERTICE* g1, VERTICE* g2){
+    
     int n1;
-    for(n1 = 1; n1 <= V; n1 ++){
+    for(n1 = 0; n1 < V; n1 ++){
         NO* p1 = g1[n1].inicio;
 
         while(p1){
@@ -137,6 +137,9 @@ int main(){
     inserirArestaGLL(g1, 2, 1, 22);
     inserirArestaGLL(g1, 3, 1, 33);
 
+    puts("G111111111111111111111111111111111111111111111111111\n");
+    imprimeGLL(g1);
+
     int m[V][V];
     inicializarGM(m);
 
@@ -144,13 +147,20 @@ int main(){
     inserirArestaGM(m, 2, 1, 22);
     inserirArestaGM(m, 3, 1, 33);
 
+    //imprimeGM(m);
+
     VERTICE* g2 = (VERTICE*)malloc(sizeof(VERTICE)*V);
     inicializarGLL(g2);
 
     transformaGMemLL(m, g2);
 
+    puts("G2222222222222222222222222222222222222222222222222222\n");
+    imprimeGLL(g2);
+
+    
+    bool eh = subGrafo(g1, g2);
     if(subGrafo(g1, g2)){
-        puts("Eh subgrafo");
+         puts("Eh subgrafo");
     }
     else puts("Nao eh subgrafo");
     
