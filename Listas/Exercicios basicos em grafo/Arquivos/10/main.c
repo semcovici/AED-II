@@ -3,7 +3,7 @@
 
 #define V 5
 #define vazio 0
-#define spam "x"
+#define spam 1001
 
 typedef int bool;
 #define true 1
@@ -57,7 +57,7 @@ void imprimeGLL(VERTICE* g){
         NO* p = g[i].inicio;
         printf("VERTICE %i\n", i);
         while(p){
-            printf("%i-peso: %i\n", p->v, p->p);
+            printf("%i-id: %i\n", p->v, p->id);
             p = p->prox;
         }
     }
@@ -80,16 +80,32 @@ bool verificaSuspeito(VERTICE* g, int k){
     for(i=0; i<V; i++){
 
         NO* p = g[i].inicio;
+            
             while(p){
-                if(p->v == k){
-                    if(p-> id = spam){
-                        return sus;
+                if(i != k){
+                    if(p->v == k){
+                        if(p-> id == spam){
+                            return sus;
+                        }
                     }
                 }
+                p= p->prox;
             }
     }
     sus = true;
     return sus;
+}
+
+void imprimeSuspeitos(VERTICE* g){
+
+    int i;
+    for(i=0; i<V; i++){
+        if(verificaSuspeito(g, i)){
+            printf("O user %i eh suspeito\n", i);
+        }else{
+            printf("O user %i nao eh suspeito\n", i);
+        }
+    }
 }
 
 int main(){
@@ -97,6 +113,15 @@ int main(){
     VERTICE* g = (VERTICE*) malloc(sizeof(VERTICE)*V);
     inicializarGLL(g);
 
+    inserirArestaGLL(g,2,3,spam);
+    inserirArestaGLL(g,3,4,spam);
+    inserirArestaGLL(g,3,1,spam);
+    inserirArestaGLL(g,4,3,spam);
+    inserirArestaGLL(g,4,1,spam);
+
+    imprimeGLL(g);
+
+    imprimeSuspeitos(g);
 
     
     return 0;
