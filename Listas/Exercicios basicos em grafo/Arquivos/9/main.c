@@ -39,7 +39,7 @@ void taEmAMasNaoEmB(int g1[V][V], int g2[V][V], int g3[V][V]){
     int i, j;
     for(i=0; i<V; i++){
         for(j=0; j<V; j++){
-            if(g1[i][j] =! vazio && g1[i][j] != g2[i][j]){
+            if(g1[i][j] != vazio && g1[i][j] != g2[i][j]){
                 g3[i][j] = g1[i][j];
             }
         }
@@ -68,9 +68,9 @@ int main(){
     int g2[V][V];
     inicializarGM(g2);
 
-    inserirArestaGM(g1, 1, 1, 10);
-    inserirArestaGM(g1, 1, 2, 10);
-    inserirArestaGM(g1, 2, 3, 10);
+    inserirArestaGM(g2, 1, 1, 10);
+    inserirArestaGM(g2, 1, 2, 10);
+    inserirArestaGM(g2, 2, 3, 10);
 
     int g3[V][V];
     inicializarGM(g3);
