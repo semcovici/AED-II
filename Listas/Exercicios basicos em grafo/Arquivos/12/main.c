@@ -69,20 +69,23 @@ void inicializarGLL(VERTICE* g){
     }
 }
 
-void prof(VERTICE* g, int i){
-
-    g[i].flag = 1;//descoberto//*
-
+void profAchaCiclo(VERTICE* g, int i){
+    
+	g[i].flag = 1;
     NO* p = g[i].inicio;
+
     while(p){
 
-        if(g[p->v].flag == 0){
+        if(g[p->v].flag == 1){
 
-            prof(g,p->v);//percurso
+            printf("ciclo de %i para %i\n",i,p->v);
+            return p;
         }
-        p = p->prox;//proximo adjacente
+
+        if(g[p->v].flag == 0) profAchaCiclo(g, p->v);
+        p =p->prox;
     }
-    g[i].flag = 2;//*
+    g[i].flag = 2;
 }
 
 void inicializaFlag(VERTICE* g){
@@ -93,20 +96,6 @@ void inicializaFlag(VERTICE* g){
     }
 }
 
-int contaGruposDesconexos(VERTICE* g){
-
-    int i;
-    int grupos = 0;
-    for(i=0; i<V; i++){
-
-        if(g[i].flag == 0){
-            
-            prof(g, i);//marca as flags
-            grupos ++;
-        }
-    }
-}
-
 
 int main(){
 
@@ -114,23 +103,26 @@ int main(){
     inicializarGLL(g);
     inicializaFlag(g);
 
-    inserirArestaGLL(g,0,1);
-    inserirArestaGLL(g,1,0);
+    inserirArestaGLL(g,0,4);
+    inserirArestaGLL(g,4,0);
 
-    inserirArestaGLL(g,2,3);
+    inserirArestaGLL(g,1,3);
+    inserirArestaGLL(g,3,1);
+
+    inserirArestaGLL(g,2,1);
+    inserirArestaGLL(g,1,2);
+
     inserirArestaGLL(g,3,2);
+    inserirArestaGLL(g,2,3);
 
     inserirArestaGLL(g,3,4);
     inserirArestaGLL(g,4,3);
 
-    inserirArestaGLL(g,4,2);
-    inserirArestaGLL(g,2,4);
-
     imprimeGLL(g);
 
-    int grupos = contaGruposDesconexos(g);
+    profAchaCiclo(g, 0);
 
-    printf("grupos: %i\n", grupos);
+    imprimeGLL(g);
 
     return 0;
 }

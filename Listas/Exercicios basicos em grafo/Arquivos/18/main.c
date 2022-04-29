@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #define V 5
-#define vazio 0
 
 typedef int bool;
 #define true 1
@@ -69,21 +68,6 @@ void inicializarGLL(VERTICE* g){
     }
 }
 
-void prof(VERTICE* g, int i){
-
-    g[i].flag = 1;//descoberto//*
-
-    NO* p = g[i].inicio;
-    while(p){
-
-        if(g[p->v].flag == 0){
-
-            prof(g,p->v);//percurso
-        }
-        p = p->prox;//proximo adjacente
-    }
-    g[i].flag = 2;//*
-}
 
 void inicializaFlag(VERTICE* g){
 
@@ -93,26 +77,35 @@ void inicializaFlag(VERTICE* g){
     }
 }
 
-int contaGruposDesconexos(VERTICE* g){
+bool existeCaminho(VERTICE* g, int a, int b){
+    
+    bool existe = false;
 
-    int i;
-    int grupos = 0;
-    for(i=0; i<V; i++){
+    g[a].flag = 1;
+    
+    if(a>=V || b>=V) return false;
 
-        if(g[i].flag == 0){
-            
-            prof(g, i);//marca as flags
-            grupos ++;
+    if(a == b) return true;//existe = true
+
+    NO* p = g[a].inicio;
+
+    while(p){
+
+        if(g[p->v].flag == 0 && existe == false){
+
+            existeCaminho(g, p->v, b);
         }
-    }
-}
 
+        p = p->prox;
+    }
+    g[a].flag = 2;
+}
 
 int main(){
 
     VERTICE* g = (VERTICE*) malloc(sizeof(VERTICE)*V);
     inicializarGLL(g);
-    inicializaFlag(g);
+    inicializaFlag(g);    
 
     inserirArestaGLL(g,0,1);
     inserirArestaGLL(g,1,0);
@@ -128,9 +121,10 @@ int main(){
 
     imprimeGLL(g);
 
-    int grupos = contaGruposDesconexos(g);
+    bool e = existeCaminho(g, 3, 4);
 
-    printf("grupos: %i\n", grupos);
+    if(e) puts("Existe Caminho");
+    else puts("Nao Existe Caminho");
 
     return 0;
 }

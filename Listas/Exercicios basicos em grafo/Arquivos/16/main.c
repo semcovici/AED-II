@@ -107,12 +107,21 @@ int contaGruposDesconexos(VERTICE* g){
     }
 }
 
+NO* criaNOMaiorGrupo(VERTICE* g, NO* i){
+
+    int i;
+    
+}
+
 
 int main(){
 
     VERTICE* g = (VERTICE*) malloc(sizeof(VERTICE)*V);
     inicializarGLL(g);
     inicializaFlag(g);
+
+    NO* maiorGrupo = (NO*)malloc(sizeof(NO));
+    
 
     inserirArestaGLL(g,0,1);
     inserirArestaGLL(g,1,0);
@@ -128,9 +137,9 @@ int main(){
 
     imprimeGLL(g);
 
-    int grupos = contaGruposDesconexos(g);
+    // int grupos = contaGruposDesconexos(g);
 
-    printf("grupos: %i\n", grupos);
+    // printf("grupos: %i\n", grupos);
 
     return 0;
 }
