@@ -77,28 +77,30 @@ void inicializaFlag(VERTICE* g){
     }
 }
 
-bool existeCaminho(VERTICE* g, int a, int b){
-    
-    bool existe = false;
+int existeCaminho(VERTICE* g, int a, int b, int cont){
 
     g[a].flag = 1;
     
-    if(a>=V || b>=V) return false;
+    if(a>=V || b>=V) return cont;
 
-    if(a == b) return true;//existe = true
+    if(a == b) return cont;//existe = true
 
     NO* p = g[a].inicio;
 
     while(p){
 
-        if(g[p->v].flag == 0 && existe == false){
+        cont ++;
 
-            existeCaminho(g, p->v, b);
+        if(g[p->v].flag == 0){
+
+            existeCaminho(g, p->v, b, cont);
         }
 
         p = p->prox;
     }
     g[a].flag = 2;
+
+    return cont;
 }
 
 int main(){
@@ -121,10 +123,11 @@ int main(){
 
     imprimeGLL(g);
 
-    bool e = existeCaminho(g, 3, 4);
+    int cont = 0;
 
-    if(e) puts("Existe Caminho");
-    else puts("Nao Existe Caminho");
+    cont = existeCaminho(g, 4, 4, cont);
+
+    printf("askljfblakdsfb: %i\n", cont);
 
     return 0;
 }
