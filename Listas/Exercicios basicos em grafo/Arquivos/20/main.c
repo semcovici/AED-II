@@ -106,10 +106,11 @@ bool ehCompleto(VERTICE* g){
         while(p){
             cont ++;
             p=p->prox;
-        }
+        }  
 
-        if(cont < V - 1) return false;     
+        if(cont != V - 1) return false;
     }
+    
     return true;
 }
 
