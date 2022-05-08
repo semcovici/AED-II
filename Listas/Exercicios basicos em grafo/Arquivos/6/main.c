@@ -2,17 +2,19 @@
 #include <stdlib.h>
 
 #define V 5
+#define vazio 0
 
 typedef int bool;
 #define true 1
 #define false 0
 
 typedef struct s{
-    int v;
+    int v;//vertice
 	struct s* prox;
 }NO;
 
 typedef struct z{
+    int flag;
     NO* inicio;    
 } VERTICE;
 
@@ -51,9 +53,8 @@ void imprimeGLL(VERTICE* g){
     for(i=0; i<V; i++){
 
         NO* p = g[i].inicio;
-        printf("VERTICE %i\n", i);
+        printf("VERTICE %i->flag:%i\n", i, g[i].flag);
         while(p){
-
             printf("%i\n", p->v);
             p = p->prox;
         }
@@ -68,103 +69,145 @@ void inicializarGLL(VERTICE* g){
     }
 }
 
-void imprimeGMatriz(int g[V][V]){
-    int i,j;
 
-    for(i=0; i<V; i++)
-        for(j=0;j<V; j++)
-                printf ("\nElemento[%d][%d] = %d\n", i, j, g[i][j]);
-}
 
-void inicializarGMatriz(int g[V][V]){
-    int i,j;
-    for(i=0; i<V; i++)
-        for(j=0; j<V; j++)
-            g[i][j] = 0;
-}
+bool profAchaCiclo(VERTICE* g, int i){
+    
+	g[i].flag = 1;
+    NO* p = g[i].inicio;
 
-void inserirArestaGM(int g[V][V], int i, int j){
-    g[i][j] = 1;
-}
+    while(p){
 
-void grafoCompletasso(int g[V][V]){
-    int i,j;
-    for(i=0; i<V; i++)
-        for(j=0; j<V; j++)
-            g[i][j] = 1;
-}
+        if(g[p->v].flag == 1){
 
-void transformaGMemLL(int m[V][V], VERTICE* g){
-
-    int i, j;
-    for(i=0; i<V; i++){
-        for(j=0; j<V; j++){
-            if(m[i][j] != 0){
-                inserirArestaGLL(g,i,j);
-            }
+            printf("ciclo de %i para %i\n",i,p->v);
+            return false;
         }
+
+        if(g[p->v].flag == 0) profAchaCiclo(g, p->v);
+        p =p->prox;
     }
+    g[i].flag = 2;
 }
 
-int contaLaco(int g[V][V]){
+void prof(VERTICE* g, int i){
+
+    g[i].flag = 1;
+    NO* p = g[i].inicio;
+
+    while(p){
+
+        if(g[i].flag == 0){
+
+            prof(g, p->v);
+        }
+        p = p->prox;
+    }
+    g[i].flag = 2;
+}
+
+bool ehConexo(VERTICE* g){
+
+    int grupos = 0;
     int i;
-    int qtd = 0;
-
     for(i=0; i<V; i++){
-        if(g[i][i] == 1){
-             qtd++;
+
+        if(g[i].flag == 0){
+            
+            prof(g, i);
+            grupos ++;
         }
     }
 
-    return qtd;
+    if(grupos <= 1) return true;
+    else return false;
 }
 
-bool ehDirigido(int g[V][V]){
+void inicializarRaiz(int raiz[V]){
     
-    int i, j, arestasNaoDirigidas;
+    int i;
     for(i=0; i<V; i++){
-        for(j=0; j<V; j++){
-             if(g[i][j] == g[j][i]){
-                arestasNaoDirigidas++;
-            }
+
+    }
+}
+
+int ehEnraizada(VERTICE* g){
+
+    bool raiz[V]; 
+    inicializarRaiz(raiz);
+
+    int i;
+    for(i=0; i<V; i++){
+        NO* p = g[i].inicio;
+
+        while(p){
+
+            raiz[p->v] == false;
+            p = p-> prox;
         }
     }
-    
-    int arestasPossiveis = V*V;
-    int lacos = V;
-    
-    if(arestasNaoDirigidas = (arestasPossiveis-lacos)/2){
-        
-        return false;
+
+    int count = 0;
+    int j, x;
+    for(j=0; j<V; j++){
+        if(raiz[j] == true){
+            count ++;
+            x = j;
+        }
     }
-    return true;
+
+    if(count>1) return false;
+    else return x;
 }
 
-bool ehCiclico(int g[V][V]){
-
-    int i, j;
-    for()
-}
-
-bool ehArvoreEnraizada(int g[V][V]){
+bool ehArvoreEnraizada(VERTICE* g){
 
     if(!ehConexo(g)) return false;
-    if(!ehCiclico(g)) return false;
-    if(!ehDirigido(g)) return false;
+
+    int x = ehArvoreEnraizada(g);
+    if(!x) return false;
+    
+    if(!profAchaCiclo(g,x)) return false;
 
     return true;
 }
 
-int main(){
-    int m[V][V];
-    inicializarGMatriz(m);
+void inicializaFlag(VERTICE* g){
 
-    grafoCompletasso(m);
-
-    if(!ehDirigido(m)){
-        puts("nao eh dirigido");
+    int i;
+    for(i=0; i<V; i++){
+        g[i].flag = 0;
     }
-    puts("eh dirigido");
+}
 
+
+int main(){
+
+    VERTICE* g = (VERTICE*) malloc(sizeof(VERTICE)*V);
+    inicializarGLL(g);
+    inicializaFlag(g);
+
+    inserirArestaGLL(g,0,4);
+    inserirArestaGLL(g,4,0);
+
+    inserirArestaGLL(g,1,3);
+    inserirArestaGLL(g,3,1);
+
+    inserirArestaGLL(g,2,1);
+    inserirArestaGLL(g,1,2);
+
+    inserirArestaGLL(g,3,2);
+    inserirArestaGLL(g,2,3);
+
+    inserirArestaGLL(g,3,4);
+    inserirArestaGLL(g,4,3);
+
+    imprimeGLL(g);
+
+    profAchaCiclo(g, 0);
+    bool x = ehArvoreEnraizada(g);
+
+    if(x) printf("ehehheheheheheheheheheheh");
+    else printf("naonaoanoanaonaonaonaonan");
     return 0;
 }
