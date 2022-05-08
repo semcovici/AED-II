@@ -118,9 +118,14 @@ int main(){
     inserirArestaGLL(g,3,4);
     inserirArestaGLL(g,4,3);
 
-    imprimeGLL(g);
+    int i;
+    for(i=0; i<V; i++){
+        if(g[i].flag != 2){
+            profAchaCiclo(g, i);
+        }
+    }
 
-    profAchaCiclo(g, 0);
+    imprimeGLL(g);
 
     return 0;
 }
