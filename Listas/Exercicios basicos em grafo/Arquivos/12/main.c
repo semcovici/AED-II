@@ -122,7 +122,5 @@ int main(){
 
     profAchaCiclo(g, 0);
 
-    imprimeGLL(g);
-
     return 0;
 }
