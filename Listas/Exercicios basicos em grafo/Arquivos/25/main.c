@@ -13,6 +13,7 @@ typedef struct s{
 }NO;
 
 typedef struct z{
+    int dist;
     int via;
     int flag;
     NO* inicio;    
@@ -155,16 +156,16 @@ void exibirAmigos(VERTICE* g, int i){
 
     inicializarFlags(g);
     inicializarVia(g);
+    inicializarDist(g);
 
     inserirNaFila(&f, i);
     g[i].flag = 1;
+    g[i].dist = 0;
 
     while(f.inicio){
 
         i = f.inicio->v;
         excluirDaFila(&f);
-
-        
 
         NO* p = g[i].inicio;
         while(p){
@@ -174,6 +175,8 @@ void exibirAmigos(VERTICE* g, int i){
                 g[p->v].flag = 1;
         
                 g[p->v].via = i;
+
+                g[p->v].dist = 1 + g[i].dist;
 
                 inserirNaFila(&f, p->v);
             }
@@ -203,6 +206,24 @@ void imprimeVia(VERTICE* g){
     }
 }
 
+void imprimeDist(VERTICE* g){
+
+    puts("DIST DIST DIST");
+    int i;
+    for(i=0;i<V;i++){
+
+        printf("dist[%i] -> %i\n", i, g[i].dist);
+    }
+}
+
+void inicializarDist(VERTICE* g){
+
+    int i;
+    for(i=0; i<V; i++){
+        g[i].dist = -1;
+    }
+}
+
 int main(){
 
     VERTICE* g = (VERTICE*) malloc(sizeof(VERTICE)*V);
@@ -219,6 +240,7 @@ int main(){
 
     imprimeFlags(g);
     imprimeVia(g);
+    imprimeDist(g);
 
     return 0;
 }
