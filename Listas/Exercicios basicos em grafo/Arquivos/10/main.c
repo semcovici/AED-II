@@ -1,3 +1,11 @@
+/*10. Considere um grafo dirigido em lista de adjacências 
+representando uma rede de troca de emails, onde cada vértice 
+representa um usuário, e cada aresta representa um email enviado. 
+Cada aresta possui um campo int id que representa o conteúdo da mensagem 
+(ou seja, o campo id faz parte da definição do nó das listas de adjacências). 
+Problema: circula pela rede uma mensagem x do tipo spam. Escreva um algoritmo 
+para exibir os usuários suspeitos de iniciar a propagação de x. Um usuário
+é considerado suspeito se ele próprio não recebeu a mensagem x nenhuma vez.*/
 #include <stdio.h>
 #include <stdlib.h>
 
