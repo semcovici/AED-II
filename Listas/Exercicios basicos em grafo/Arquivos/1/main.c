@@ -1,3 +1,5 @@
+/*1. Escreva um algoritmo para contar 
+a quantidade de laços em um grafo.*/
 #include <stdio.h>
 
 #define V 5

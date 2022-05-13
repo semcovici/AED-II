@@ -1,3 +1,9 @@
+/*16.Variação: ao invés de contar os grupos, 
+retornar uma lista ligada contendo os vértices do 
+maior grupo identificado. Se dois ou mais grupos possuem 
+a mesma quantidade de vértices, retornar a lista de 
+vértices dequalquer um.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -19,13 +25,13 @@ typedef struct z{
 } VERTICE;
 
 /*busca a aresta que conecta i e j*/
-NO* buscaArestaGLL(VERTICE* g, int i, int j, NO* ant){
-    ant = NULL;
+NO* buscaArestaGLL(VERTICE* g, int i, int j, NO** ant){
+    *ant = NULL;
     NO* p = g[i].inicio;
 
     while(p){
         if(p->v == j) return p;
-        ant = p;
+        *ant = p;
         p=p->prox;
     }
 
@@ -69,21 +75,6 @@ void inicializarGLL(VERTICE* g){
     }
 }
 
-void prof(VERTICE* g, int i){
-
-    g[i].flag = 1;//descoberto//*
-
-    NO* p = g[i].inicio;
-    while(p){
-
-        if(g[p->v].flag == 0){
-
-            prof(g,p->v);//percurso
-        }
-        p = p->prox;//proximo adjacente
-    }
-    g[i].flag = 2;//*
-}
 
 void inicializaFlag(VERTICE* g){
 
@@ -93,24 +84,55 @@ void inicializaFlag(VERTICE* g){
     }
 }
 
-int contaGruposDesconexos(VERTICE* g){
+NO* prof(VERTICE* g, int i,int* tamanho){
 
-    int i;
-    int grupos = 0;
-    for(i=0; i<V; i++){
+    NO* caminho =(NO*)malloc(sizeof(NO)*V);
 
-        if(g[i].flag == 0){
+    g[i].flag = 1;//descoberto//*
+
+    NO* p = g[i].inicio;
+    while(p){
+
+        if(g[p->v].flag == 0){
+            printf("teste");
             
-            prof(g, i);//marca as flags
-            grupos ++;
+            caminho[i] = *g[i].inicio;
+            printf("tetesetszgsr    %i\n", caminho[i].v);
+            prof(g,p->v, &tamanho);//percurso
+
+            return caminho;
         }
+        p = p->prox;//proximo adjacente
     }
+
+    g[i].flag = 2;
+    tamanho ++;
 }
 
-NO* criaNOMaiorGrupo(VERTICE* g, NO* i){
-
-    int i;
+NO* criaNOMaiorGrupo(VERTICE* g){
     
+    NO* maiorGrupo = (NO*) malloc(sizeof(NO)* V);
+    NO* aux = (NO*) malloc(sizeof(NO)*V);
+
+    int tamanhoMaior = 0; 
+    int tamanhoAux;
+    int i;
+    for(i=0;i<V;i++){
+
+        tamanhoAux = 0;
+
+        if(g[i].flag == 0){
+
+            aux = prof(g,i,&tamanhoAux);
+            
+            if(tamanhoAux > tamanhoMaior){
+                maiorGrupo = aux;
+                tamanhoMaior = tamanhoAux;
+            }
+        }
+    }
+
+    return maiorGrupo;
 }
 
 
@@ -127,19 +149,18 @@ int main(){
     inserirArestaGLL(g,1,0);
 
     inserirArestaGLL(g,2,3);
-    inserirArestaGLL(g,3,2);
-
     inserirArestaGLL(g,3,4);
-    inserirArestaGLL(g,4,3);
-
-    inserirArestaGLL(g,4,2);
     inserirArestaGLL(g,2,4);
 
     imprimeGLL(g);
 
-    // int grupos = contaGruposDesconexos(g);
+    NO* resposta = criaNOMaiorGrupo(g);
 
-    // printf("grupos: %i\n", grupos);
+    puts("\n\n\n");
+    int i;
+    for(i=0;i<V;i++){
+        printf("%i->", resposta[i].v);
+    }
 
     return 0;
 }

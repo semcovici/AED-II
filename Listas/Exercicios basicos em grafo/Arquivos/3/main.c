@@ -1,3 +1,5 @@
+/*3. Escreva um algoritmo para destruir as arestas de um 
+grafo, tornando-o vazio.*/
 #include <stdio.h>
 
 #define V 5

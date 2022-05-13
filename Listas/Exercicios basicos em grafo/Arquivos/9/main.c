@@ -1,3 +1,5 @@
+/*9.Dados dois grafos g1 e g2, escreva um algoritmo que 
+retorne um grafo g3 cujas arestas estejam presentes em g1 mas não em g2.*/
 #include <stdio.h>
 #include <stdlib.h>
 

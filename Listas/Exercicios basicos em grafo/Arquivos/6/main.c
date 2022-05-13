@@ -1,3 +1,8 @@
+/*6.Uma árvore enraizada é um grafo acíclico, conexo e dirigido, 
+com um único vértice fonte de onde todas as arestas partem. 
+Escreva um algoritmo que, dado um grafo g, 
+verifique se é uma árvore enraizada ou não, 
+retornando true/false conforme o caso.*/
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -209,5 +214,6 @@ int main(){
 
     if(x) printf("ehehheheheheheheheheheheh");
     else printf("naonaoanoanaonaonaonaonan");
+    
     return 0;
 }

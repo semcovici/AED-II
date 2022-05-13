@@ -1,3 +1,6 @@
+/*17.Seja um grafo g e dois vértices ae b. 
+Verifique se há um caminho qualquer entre a e b retornando 
+true/false conforme o caso.*/
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -82,8 +85,6 @@ bool existeCaminho(VERTICE* g, int a, int b){
     bool existe = false;
 
     g[a].flag = 1;
-    
-    if(a>=V || b>=V) return false;
 
     if(a == b) return true;//existe = true
 

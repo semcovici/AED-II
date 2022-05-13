@@ -1,3 +1,13 @@
+/*11. Considere um grafo dirigido em lista de adjacências 
+representando uma rede de chamadas telefônicas entre diversas 
+unidades de uma empresa, onde cada vértice representa uma unidade, 
+e cada aresta representa uma chamada efetuada. As unidades podem 
+estar em diferentes países, identificados por um campo int país 
+definido no respectivo vértice. Problema: a conta de telefone global 
+da empresa está muito alta. Escreva um algoritmo que identifique a unidade 
+que efetua chamadas para o maior número de países. Havendo empate, retorne 
+qualquer resposta possível.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 

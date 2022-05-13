@@ -1,3 +1,10 @@
+/*20. Um grafo não dirigido é completo se 
+todos seus vértices são adjacentes, ouseja, 
+existe uma aresta conectando cada par de vértices 
+de um grafo. Escrevaum algoritmo que, dado um 
+grafo simples g, verifique se gé completo, 
+retornando true/false conforme o caso.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -18,13 +25,13 @@ typedef struct z{
 } VERTICE;
 
 /*busca a aresta que conecta i e j*/
-NO* buscaArestaGLL(VERTICE* g, int i, int j, NO* ant){
-    ant = NULL;
+NO* buscaArestaGLL(VERTICE* g, int i, int j, NO** ant){
+    *ant = NULL;
     NO* p = g[i].inicio;
 
     while(p){
         if(p->v == j) return p;
-        ant = p;
+        *ant = p;
         p=p->prox;
     }
 
@@ -134,7 +141,7 @@ int main(){
 
     GCompletoLL(g);
 
-    excluirAresta(g,4,2);
+    //excluirAresta(g,4,2);
 
     bool eh = ehCompleto(g);
 

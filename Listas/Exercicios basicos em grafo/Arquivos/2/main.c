@@ -1,3 +1,4 @@
+/*2.Variação: remover todos os laços encontrados.*/
 #include <stdio.h>
 
 #define V 5

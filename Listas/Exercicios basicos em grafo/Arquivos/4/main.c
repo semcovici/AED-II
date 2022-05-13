@@ -1,3 +1,5 @@
+/* 4.Seja um grafo gdirigido. Escreva um algoritmo 
+para retornar o grafo transposto de g.*/
 #include <stdio.h>
 
 #define V 5

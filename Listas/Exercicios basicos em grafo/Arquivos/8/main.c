@@ -1,3 +1,7 @@
+/*8. Sejam dois grafos g1e g2contendo exatamente os mesmos vértices. 
+Verifique se g2é um subgrafo de g1, retornando true/false conforme o caso. 
+Para tornar o problema mais interessante, 
+considere que um grafo é representado em listas e outro em matriz.*/
 #include <stdio.h>
 #include <stdlib.h>
 

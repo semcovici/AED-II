@@ -1,10 +1,11 @@
-/*25.Seja um grafo não-dirigido representando uma rede social. 
-Os vértices são os usuários e as arestas indicam  relações  
-(e.g.,  de  amizade)  entre  pares  de  usuários.  Dado  um  
-usuário i,  escreva  um algoritmo  para  exibir  todos  os  
-usuários  relacionados a icom até dgraus  de  distância(medida em 
-quantidade  de  arestas).  Os  amigos  imediatos  estão  no  grau  1,  
-os  amigos  dos  amigos  no  grau  2, e assim por diante.*/
+/*27.Seja um grafo representando uma malha aérea. 
+Vértices são cidades e arestas são voos. Escreva 
+um algoritmo  que,  dada  uma  cidade  origem a,  
+um  destino be  uma  companhia  aérea c,  encontre  
+o trajeto  com  menor  número  de  conexões  de a até b 
+voando  apenas  pela  companhia c.  A  resposta deve ser 
+fornecida na forma de uma lista ligada de vértices de a até b.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,6 +16,7 @@ typedef int bool;
 #define false 0
 
 typedef struct s{
+    int interesse;
     int v;//vertice
 	struct s* prox;
 }NO;
@@ -85,7 +87,7 @@ NO* buscaArestaGLL(VERTICE* g, int i, int j, NO** ant){
     return NULL;
 }
 
-bool inserirArestaGLL(VERTICE* g, int i, int j){
+bool inserirArestaGLL(VERTICE* g, int i, int j, int interesse){
     NO* ant;
     NO* atual = buscaArestaGLL(g,i,j,&ant);
 
@@ -93,6 +95,7 @@ bool inserirArestaGLL(VERTICE* g, int i, int j){
 
     atual = (NO*)malloc(sizeof(NO));
     atual -> v = j;
+    atual ->interesse = interesse;
 		
     atual->prox = g[i].inicio;
     g[i].inicio = atual;
@@ -126,7 +129,7 @@ void imprimeGLL(VERTICE* g){
         NO* p = g[i].inicio;
         printf("VERTICE %i\n", i);
         while(p){
-            printf("%i\n", p->v);
+            printf("%i -> inresse:%i\n", p->v, p->interesse);
             p = p->prox;
         }
     }
@@ -156,42 +159,50 @@ void inicializarVia(VERTICE* g){
     }
 }
 
-void exibirAmigos(VERTICE* g, int i){
+LISTA criaLISTACaminho(VERTICE* g, int a, int b, int c){
 
     FILA f;
     inicializarFila(&f);
 
+    LISTA l;
+    inicializarLista(&l);
+
+    inicializarDist(g);
     inicializarFlags(g);
     inicializarVia(g);
-    inicializarDist(g);
 
-    inserirNaFila(&f, i);
-    g[i].flag = 1;
-    g[i].dist = 0;
+    g[a].flag = 1;
+    g[a].dist = 0;
+    inserirNaFila(&f, a);
 
     while(f.inicio){
 
-        i = f.inicio->v;
+        a = f.inicio->v;
         excluirDaFila(&f);
 
-        NO* p = g[i].inicio;
+        NO* p = g[a].inicio;
         while(p){
 
-            if(g[p->v].flag == 0){
+            if(g[p->v].flag == 0 && p->compania ==c){
 
                 g[p->v].flag = 1;
-        
-                g[p->v].via = i;
-
-                g[p->v].dist = 1 + g[i].dist;
-
-                inserirNaFila(&f, p->v);
+                g[p->v].dist = g[a].dist + 1;
+                g[p->v].via = a;
+                inserirNaFila(&f,p->v);
             }
 
             p=p->prox;
         }
-        g[i].flag = 2;
+        g[a].flag = 2;
     }
+
+    int destino = b;
+    while(destino>0){
+        insereLista(&l, destino);
+        destino = g[destino].via;
+    }
+
+    return l;//ta invertida
 }
 
 void imprimeFlags(VERTICE* g){
@@ -236,14 +247,14 @@ int main(){
     VERTICE* g = (VERTICE*) malloc(sizeof(VERTICE)*V);
     inicializarGLL(g);
 
-    inserirArestaGLL(g,0,1);
-    inserirArestaGLL(g,1,2);
-    inserirArestaGLL(g,2,3);
-    inserirArestaGLL(g,3,4);
+    inserirArestaGLL(g,0,1,0);
+    inserirArestaGLL(g,1,2,0);
+    inserirArestaGLL(g,2,3,0);
+    inserirArestaGLL(g,3,4,0);
 
     imprimeGLL(g);
 
-    exibirAmigos(g, 0);
+    achaInteresseProx(g,1,2,0);
 
     imprimeFlags(g);
     imprimeVia(g);

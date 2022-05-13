@@ -1,3 +1,5 @@
+/*5.Escreva um algoritmo que dado um grafo mrepresentado em matriz, 
+retorne o mesmo grafo em listas de adjacências.*/
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -1,3 +1,5 @@
+/*12.Seja um grafo gnão-dirigido. Escreva uma função 
+para detectar ciclos em g, retornando true/false.*/
 #include <stdio.h>
 #include <stdlib.h>
 

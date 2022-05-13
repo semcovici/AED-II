@@ -1,3 +1,6 @@
+/*7.Seja um grafo gnão-dirigido ponderado (com um peso inteiro associado a cada aresta). 
+Escreva um algoritmo que, dado ge um custo mínimo int c, 
+retorne uma cópia de gcontendo apenas as arestas de custo maior do que c.*/
 #include <stdio.h>
 #include <stdlib.h>
 

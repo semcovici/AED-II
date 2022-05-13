@@ -1,6 +1,6 @@
-/*19.Variação 2: retornar a lista dos vértices que
- compõe ocaminho de a até b.
-*/
+/*24.Para  todos  os  vértices  de  um  grafo,
+calcular  o  tamanho  do  caminho  mais  curto  
+a  partir  de  um vértice inicial i.*/
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,6 +16,8 @@ typedef struct s{
 }NO;
 
 typedef struct z{
+    int dist;
+    int via;
     int flag;
     NO* inicio;    
 } VERTICE;
@@ -64,6 +66,7 @@ bool excluirDaFila(FILA* f) {
   return true;
 } /* excluirDaFila */
 
+
 /*busca a aresta que conecta i e j*/
 NO* buscaArestaGLL(VERTICE* g, int i, int j, NO** ant){
     *ant = NULL;
@@ -93,13 +96,31 @@ bool inserirArestaGLL(VERTICE* g, int i, int j){
 	return true;
 }
 
+bool excluirAresta(VERTICE* g, int i, int j){
+    
+    NO* ant;
+    NO* atual = buscaArestaGLL(g,i,j,&ant);
+
+    if(!atual) return false; //não existe essa aresta, logo não pode excluir-la
+		
+    if(ant == NULL) {
+        ant->prox = atual->prox;
+    }else {
+        g[i].inicio = atual -> prox;
+    }
+
+    free(atual);
+
+    return true;
+}
+
 void imprimeGLL(VERTICE* g){
 
     int i;
     for(i=0; i<V; i++){
 
         NO* p = g[i].inicio;
-        printf("VERTICE %i->flag:%i\n", i, g[i].flag);
+        printf("VERTICE %i\n", i);
         while(p){
             printf("%i\n", p->v);
             p = p->prox;
@@ -115,8 +136,7 @@ void inicializarGLL(VERTICE* g){
     }
 }
 
-
-void inicializaFlag(VERTICE* g){
+void inicializarFlags(VERTICE* g){
 
     int i;
     for(i=0; i<V; i++){
@@ -124,111 +144,107 @@ void inicializaFlag(VERTICE* g){
     }
 }
 
-// NO* existeCaminho(VERTICE* g, int a, int b, int* caminho){
+void inicializarVia(VERTICE* g){
 
-//     g[a].flag = 1;
-    
-//     //if(a>=V || b>=V) return cont;
+    int i;
+    for(i=0;i<V;i++){
+        g[i].via = -1;
+    }
+}
 
-//     if(a == b){
-//         int x;
-//         for(x=0; x<V; x++){
-//             if(caminho[x] == -1){
-//                 caminho[x] = a;
-//                 break;
-//             }
-//         }
-//         return caminho;
-//     } 
-    
+void inicializarDist(VERTICE*g){
 
-//     NO* p = g[a].inicio;
+    int i;
+    for(i=0;i<V;i++){
+        g[i].dist = 0;
+    }
+}
 
-//     while(p){
-
-//         int i;
-//         for(i=0; i<V; i++){
-
-//             if(caminho[i] == -1){
-//                 caminho[i] = a;
-//                 break;
-//             }
-                
-//         }
-
-//         if(g[p->v].flag == 0){
-
-//             existeCaminho(g, p->v, b, &caminho);
-//         }
-
-//         p = p->prox;
-//     }
-//     g[a].flag = 2;
-    
-// }
-
-NO* listaLigadaCaminho(VERTICE* g, int a, int b){
+void largura(VERTICE* g, int i){
 
     FILA f;
     inicializarFila(&f);
-    inicializaFlag(g);
 
-    NO* caminho = (NO*)malloc(sizeof(NO)*V);
+    inicializarFlags(g);
+    inicializarDist(g);
+    inicializarVia(g);
 
-    inserirNaFila(&f, a);
-    g[a].flag = 1;
+    inserirNaFila(&f, i);
+    g[i].flag = 1;
 
     while(f.inicio){
 
-        a = f.inicio->v;
+        i = f.inicio->v;
         excluirDaFila(&f);
 
-        if(a==b){
-            while(f.inicio) excluirDaFila(&f);
-            return caminho;
-        }
-
-        NO* p = g[a].inicio;
+        NO* p = g[i].inicio;
         while(p){
-
-            if(g[a].flag == 0){
-
-                g[a].flag = 1;
-                inserirNaFila(&f, a);
-                
+            
+            if(g[p->v].flag == 0){
+                inserirNaFila(&f, p->v);
+                g[p->v].flag = 1;
+                g[p->v].via = i;
+                g[p->v].dist = g[i].dist + 1; 
             }
 
             p=p->prox;
         }
-        g[a].flag = 2;
+        g[i].flag = 2;
     }
+}
 
-    return NULL;
+void imprimeFlags(VERTICE* g){
+
+    puts("FLAGS FLAGS");
+    int i;
+    for(i=0; i<V; i++){
+
+        printf("flag[%i] -> %i\n",i, g[i].flag);
+    }
+}
+void imprimeVia(VERTICE* g){
+
+    puts("VIA VIA VIA");
+    int i;
+    for(i=0;i<V;i++){
+
+        printf("via[%i] -> %i\n", i, g[i].via);
+    }
+}
+
+void imprimeDist(VERTICE* g){
+
+    puts("DIST DIST DIST");
+    int i;
+    for(i=0;i<V;i++){
+
+        printf("dist[%i] -> %i\n", i, g[i].dist);
+    }
 }
 
 int main(){
 
     VERTICE* g = (VERTICE*) malloc(sizeof(VERTICE)*V);
     inicializarGLL(g);
-    inicializaFlag(g);    
 
-    inserirArestaGLL(g,0,1);
     inserirArestaGLL(g,1,2);
     inserirArestaGLL(g,2,3);
+    inserirArestaGLL(g,3,2);
+    inserirArestaGLL(g,4,2);
     inserirArestaGLL(g,3,4);
+    inserirArestaGLL(g,0,2);
+    inserirArestaGLL(g,0,1);
+
+    inicializarDist(g);
+
+    printf("teste");
+
+    largura(g, 0);
 
     imprimeGLL(g);
-
-    NO* caminho = listaLigadaCaminho(g,0,4);
-
-    int i;
-    for(i=0;i<V;i++)
-        printf("%i->", caminho[i]);
-
-
-    imprimeGLL(g);
-
-
+    imprimeFlags(g);
+    imprimeVia(g);
+    imprimeDist(g);
 
     return 0;
 }

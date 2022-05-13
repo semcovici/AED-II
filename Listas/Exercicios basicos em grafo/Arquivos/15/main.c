@@ -1,3 +1,6 @@
+/*15. Seja um grafo gnão-conexo  e não-dirigido. 
+Escreva uma função para contar a quantidade de grupos 
+disjuntos de vértices mutuamente alcançáveis em g*/
 #include <stdio.h>
 #include <stdlib.h>
 

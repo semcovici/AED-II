@@ -1,12 +1,10 @@
-/*25.Seja um grafo não-dirigido representando uma rede social. 
-Os vértices são os usuários e as arestas indicam  relações  
-(e.g.,  de  amizade)  entre  pares  de  usuários.  Dado  um  
-usuário i,  escreva  um algoritmo  para  exibir  todos  os  
-usuários  relacionados a icom até dgraus  de  distância(medida em 
-quantidade  de  arestas).  Os  amigos  imediatos  estão  no  grau  1,  
-os  amigos  dos  amigos  no  grau  2, e assim por diante.*/
+/*23.Variação: havendo empate, retorne uma 
+lista ligada contendo todas as 
+salas vazias mais próximas.*/
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #define V 5
 
@@ -20,8 +18,10 @@ typedef struct s{
 }NO;
 
 typedef struct z{
+    int marca;
     int dist;
     int via;
+    int quant;
     int flag;
     NO* inicio;    
 } VERTICE;
@@ -30,6 +30,10 @@ typedef struct f{
     NO* inicio;
     NO* fim;
 }FILA;
+
+typedef struct l{
+    NO* cabeca;
+}LISTA;
 
 void inicializarFila(FILA* f){
     f->inicio = NULL;
@@ -156,36 +160,57 @@ void inicializarVia(VERTICE* g){
     }
 }
 
-void exibirAmigos(VERTICE* g, int i){
+void inicializarQtd(VERTICE*g){
 
-    FILA f;
-    inicializarFila(&f);
+    int i;
+    for(i=0;i<V;i++){
+        g[i].quant = 0;
+    }
+}
 
+int Largura(VERTICE* g, int i){
+    
+    FILA* f;
+    inicializarFila(f);
+
+    LISTA* caminho;
+
+    int menorDist = INT_MAX/2;
+    
     inicializarFlags(g);
     inicializarVia(g);
-    inicializarDist(g);
+    inicializaDist(g);
+    inicializaMarca(g);
 
-    inserirNaFila(&f, i);
+    inserirNaFila(f,i);
     g[i].flag = 1;
-    g[i].dist = 0;
 
-    while(f.inicio){
+    while(f->inicio){
 
-        i = f.inicio->v;
-        excluirDaFila(&f);
+        i = f->inicio->v;
+        excluirDaFila(f);
+
+        if(g[i].quant == 0){
+            g[i].marca = 1;
+            if(g[i].dist <= menorDist){
+                if(g[i].dist == 0){
+                    insereLista(&l,i);
+                }else{
+                }
+            }
+        }
 
         NO* p = g[i].inicio;
         while(p){
 
             if(g[p->v].flag == 0){
 
+                inserirNaFila(f, p->v);
+
                 g[p->v].flag = 1;
-        
+
                 g[p->v].via = i;
-
                 g[p->v].dist = 1 + g[i].dist;
-
-                inserirNaFila(&f, p->v);
             }
 
             p=p->prox;
@@ -213,6 +238,20 @@ void imprimeVia(VERTICE* g){
     }
 }
 
+void inicializaDist(VERTICE* g){
+    int i;
+    for(i=0; i<V;i++){
+        g[i].dist = 0;
+    }
+}
+
+void inicializaMarca(VERTICE* g){
+    int i;
+    for(i=0; i<V;i++){
+        g[i].marca = 0;
+    }
+}
+
 void imprimeDist(VERTICE* g){
 
     puts("DIST DIST DIST");
@@ -223,31 +262,52 @@ void imprimeDist(VERTICE* g){
     }
 }
 
-void inicializarDist(VERTICE* g){
+void imprimeMarca(VERTICE* g){
 
+    puts("MARCA MARCA MARCA");
     int i;
-    for(i=0; i<V; i++){
-        g[i].dist = -1;
+    for(i=0;i<V;i++){
+
+        printf("marca[%i] -> %i\n", i, g[i].marca);
     }
 }
+
+void insereLista(LISTA* l, NO* p){
+    NO* aux;
+    aux = l->cabeca;
+    l->cabeca = p;
+    l->cabeca->prox = aux;
+}
+
+void inicializaLista(LISTA* l){
+    l->cabeca = NULL;
+}
+
 
 int main(){
 
     VERTICE* g = (VERTICE*) malloc(sizeof(VERTICE)*V);
     inicializarGLL(g);
 
-    inserirArestaGLL(g,0,1);
     inserirArestaGLL(g,1,2);
     inserirArestaGLL(g,2,3);
+    inserirArestaGLL(g,3,2);
+    inserirArestaGLL(g,4,2);
     inserirArestaGLL(g,3,4);
+    inserirArestaGLL(g,0,2);
+    inserirArestaGLL(g,0,1);
+
+    inicializarQtd(g);
+    g[0].quant = 50;
+    g[1].quant = 50;
+    g[2].quant = 50;
+    g[3].quant = 50;
 
     imprimeGLL(g);
-
-    exibirAmigos(g, 0);
-
     imprimeFlags(g);
     imprimeVia(g);
     imprimeDist(g);
+    imprimeMarca(g);
 
     return 0;
 }

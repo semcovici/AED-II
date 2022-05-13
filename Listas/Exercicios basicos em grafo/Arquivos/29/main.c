@@ -1,10 +1,8 @@
-/*25.Seja um grafo não-dirigido representando uma rede social. 
-Os vértices são os usuários e as arestas indicam  relações  
-(e.g.,  de  amizade)  entre  pares  de  usuários.  Dado  um  
-usuário i,  escreva  um algoritmo  para  exibir  todos  os  
-usuários  relacionados a icom até dgraus  de  distância(medida em 
-quantidade  de  arestas).  Os  amigos  imediatos  estão  no  grau  1,  
-os  amigos  dos  amigos  no  grau  2, e assim por diante.*/
+/*29.Variação: considere ainda que existe um 
+local n que não deve ser visitado (por exemplo, n pode 
+ser uma área da cidade que foi interditada por alguma razão). 
+Modifique o algoritmo de acordo.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -20,6 +18,7 @@ typedef struct s{
 }NO;
 
 typedef struct z{
+    int x;
     int dist;
     int via;
     int flag;
@@ -124,7 +123,7 @@ void imprimeGLL(VERTICE* g){
     for(i=0; i<V; i++){
 
         NO* p = g[i].inicio;
-        printf("VERTICE %i\n", i);
+        printf("VERTICE %i -> interesse: %i\n", i,g[i].x);
         while(p){
             printf("%i\n", p->v);
             p = p->prox;
@@ -156,42 +155,74 @@ void inicializarVia(VERTICE* g){
     }
 }
 
-void exibirAmigos(VERTICE* g, int i){
+void excluirAdjacenciaVertice(VERTICE* g, int i){
+
+    NO* p =g[i].inicio;
+    while(p){
+        excluirAresta(g,i,p->v);
+        p=p->prox;
+    }
+
+    int x;
+    for(x=0;x<V;x++){
+        if(x==i) continue;
+        NO* k = g[x].inicio;
+        while(k){
+            if(k->v == i) excluirAresta(g,k->v,i);
+            p=p->prox;
+        }
+    }
+}
+
+int menorDist(VERTICE* g, int i, int x, int c, int n){
 
     FILA f;
     inicializarFila(&f);
 
+    inicializarDist(g);
     inicializarFlags(g);
     inicializarVia(g);
-    inicializarDist(g);
 
-    inserirNaFila(&f, i);
+    //excluirAdjacenciaVertice(g,n);
+
     g[i].flag = 1;
     g[i].dist = 0;
+    inserirNaFila(&f, i);
+
+    
 
     while(f.inicio){
 
         i = f.inicio->v;
         excluirDaFila(&f);
 
+        if(g[i].x == x){
+            while(f.inicio) excluirDaFila(&f);
+            return i;
+        }
+
         NO* p = g[i].inicio;
         while(p){
-
-            if(g[p->v].flag == 0){
-
-                g[p->v].flag = 1;
-        
-                g[p->v].via = i;
-
-                g[p->v].dist = 1 + g[i].dist;
-
-                inserirNaFila(&f, p->v);
+            
+            if(g[p->v].x == n){
+                g[p->v].flag = 2;
+                p=p->prox;
+                continue;
             }
-
+            if(g[p->v].flag == 0){
+                g[p->v].flag = 1;
+                g[p->v].dist = g[i].dist + 1;
+                g[p->v].via = i;
+                inserirNaFila(&f,p->v);
+            }
+                        
             p=p->prox;
         }
+
         g[i].flag = 2;
     }
+
+    return -1;
 }
 
 void imprimeFlags(VERTICE* g){
@@ -231,23 +262,34 @@ void inicializarDist(VERTICE* g){
     }
 }
 
+void inicializarInteresse(VERTICE* g){
+
+    int i;
+    for(i=0;i<V;i++)    
+        g[i].x = -1;
+}
+
 int main(){
 
     VERTICE* g = (VERTICE*) malloc(sizeof(VERTICE)*V);
     inicializarGLL(g);
+    inicializarInteresse(g);
 
     inserirArestaGLL(g,0,1);
     inserirArestaGLL(g,1,2);
     inserirArestaGLL(g,2,3);
     inserirArestaGLL(g,3,4);
 
+    g[1].x = 1;
+    g[3].x = 1;
+
     imprimeGLL(g);
 
-    exibirAmigos(g, 0);
-
+    int i = menorDist(g,0,1,2);
+    
     imprimeFlags(g);
-    imprimeVia(g);
-    imprimeDist(g);
+
+    printf("O ponto de interesse mais proximo eh: %i\n", i);
 
     return 0;
 }

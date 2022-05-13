@@ -1,3 +1,8 @@
+/*21. Seja G= (V;A) um grafo simples e Ḡ= (V; V2-A) 
+seu complemento, onde V2 é o conjunto de todos os 
+pares de vértices em V. Escreva um método que, dado 
+um grafo simples G, retorne seu complemento Ḡ.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -1,3 +1,12 @@
+/*22.Seja  um  grafo g representando  
+salas  de  aula  (vértices)  e  suas  ligações  
+(arestas).  Cada  sala  possui uma  ocupação  
+representada  por  um  inteiro.  Escreva  um  
+algoritmo  que,  a  partir  da  sala  atual i, encontre  
+a  sala  vazia  mais  próxima,  retornando  o  número  do  
+vértice  correspondente.  Havendo mais de uma sala que 
+atenda estas condições, retorne a primeira que encontrar.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
