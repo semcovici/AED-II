@@ -1,3 +1,4 @@
+//5. Escreva uma função para excluir todos os registros do curso X.
 #include <stdio.h>
 
 typedef struct{
@@ -8,30 +9,21 @@ typedef struct{
     bool valido;//para exclusao logica
 }REGISTRO;
 
-bool excluiRegistroCursoX(FILE** arq,int X){
+bool excluiRegistroCursoX(FILE* arq,int X){
     
     if(!arq) return false;
 
     REGISTRO aux;
 
-    while(1==fread(&aux,sizeof(REGISTRO),1,*arq)){
+    while(1==fread(&aux,sizeof(REGISTRO),1,arq)){
 
         if(aux.curso == X && aux.valido == true){
             aux.valido = false; //exclusão lógica
 
-            fseek(*arq, -sizeof(REGISTRO),SEEK_CUR);
-            fwrite(&aux, sizeof(REGISTRO),1,*arq);
+            fseek(arq, -sizeof(REGISTRO),SEEK_CUR);
+            fwrite(&aux, sizeof(REGISTRO),1,arq);
         }
     }
 
     return true;
-}
-
-int main(){
-
-    FILE* arq = fopen("arq.bin","wb");
-
-    if(excluiRegistroCursoX(&arq, 1)) printf("certinho");
-
-    fclose(arq);
 }
