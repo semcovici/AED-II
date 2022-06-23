@@ -1,6 +1,6 @@
+// 1. Reescreva um arquivo arq1 em um novo arquivo arq2 eliminado os registros inválidos.
+
 #include <stdio.h>
-
-
 
 typedef struct{
     int NroUSP;//chave primaria
