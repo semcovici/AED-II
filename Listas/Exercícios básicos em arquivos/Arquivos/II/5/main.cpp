@@ -1,3 +1,4 @@
+// 5. Escreva uma função para alterar o registro de nroUSP X para o nroUSP Y se possível (use o índice).
 #include <stdio.h>
 #define MAX 5
 
@@ -16,24 +17,26 @@ int excluirIndice(REGISTRO tabela[MAX], int nroUSP);           // retorna o ende
 
 bool trocaNroUSP(FILE *arq, int X, int Y, REGISTRO tabela[MAX])
 {
-    if(!arq) return false;
+    if (!arq)
+        return false;
 
     REGISTRO r;
-    
+
     int end = buscarEndereco(tabela, X);
 
-    if(end == -1) return false;
+    if (end == -1)
+        return false;
 
-    fseek(arq,sizeof(REGISTRO)*end,SEEK_SET);
-    fread(&r,sizeof(REGISTRO), 1, arq);
+    fseek(arq, sizeof(REGISTRO) * end, SEEK_SET);
+    fread(&r, sizeof(REGISTRO), 1, arq);
 
     r.NroUSP = Y;
 
-    fseek(arq,-sizeof(REGISTRO),SEEK_CUR);
-    fwrite(&r,sizeof(REGISTRO),1,arq);
+    fseek(arq, -sizeof(REGISTRO), SEEK_CUR);
+    fwrite(&r, sizeof(REGISTRO), 1, arq);
 
-    excluirIndice(tabela,X);
-    inserirIndice(tabela,Y,end);
+    excluirIndice(tabela, X);
+    inserirIndice(tabela, Y, end);
 
     return true;
 }

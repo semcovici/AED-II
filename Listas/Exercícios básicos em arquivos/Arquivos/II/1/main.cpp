@@ -1,3 +1,6 @@
+// 1. Escreva  uma  função  para  inserir  um  novo  registro  r  no  arquivo,  tomando  cuidado  para  evitar 
+// chaves duplicadas (use o índice).
+
 #include <stdio.h>
 #define MAX 5
 
@@ -30,10 +33,4 @@ bool insere(FILE* arq, REGISTRO r, REGISTRO tabela[MAX]){
     }
 
     return false;
-}
-
-
-int main(){
-
-
 }

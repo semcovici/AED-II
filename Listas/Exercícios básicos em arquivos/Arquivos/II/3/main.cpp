@@ -1,3 +1,4 @@
+// 3. Escreva uma função para excluir todos os registros do curso X (use o índice). 
 #include <stdio.h>
 #define MAX 5
 

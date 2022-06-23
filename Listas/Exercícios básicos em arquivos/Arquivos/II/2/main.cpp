@@ -14,10 +14,10 @@ bool inserirIndice(REGISTRO tabela[MAX], int nroUSP, int end); // inserção em 
 int buscarEndereco(REGISTRO tabela[MAX], int nroUSP);          // retorna -1 se end não existe
 int excluirIndice(REGISTRO tabela[MAX], int nroUSP);           // retorna o endereço exluído, ou -1 se não encontrar
 
-REGISTRO achaRegistro(FILE *arq, int nroUSP, REGISTRO tabela[MAX])
+REGISTRO achaRegistro(FILE *arq, int X, REGISTRO tabela[MAX])
 {
 
-    int end = buscarEndereco(tabela, nroUSP);
+    int end = buscarEndereco(tabela, X);
     if (end != -1)
     {
         REGISTRO r;
@@ -27,8 +27,4 @@ REGISTRO achaRegistro(FILE *arq, int nroUSP, REGISTRO tabela[MAX])
 
         return r;
     }
-}
-
-int main()
-{
 }

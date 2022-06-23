@@ -1,3 +1,4 @@
+// 4. Escreva uma função para alterar o curso de um registro de nroUSP X para o curso Y (use o índice).
 #include <stdio.h>
 #define MAX 5
 
@@ -14,7 +15,7 @@ bool inserirIndice(REGISTRO tabela[MAX], int nroUSP, int end); // inserção em 
 int buscarEndereco(REGISTRO tabela[MAX], int nroUSP);          // retorna -1 se end não existe
 int excluirIndice(REGISTRO tabela[MAX], int nroUSP);           // retorna o endereço exluído, ou -1 se não encontrar
 
-bool excluiCursoX(FILE *arq, int X, int Y, REGISTRO tabela[MAX])
+bool alteraCurso(FILE *arq, int X, int Y, REGISTRO tabela[MAX])
 {
     if(!arq) return false;
 
@@ -31,6 +32,8 @@ bool excluiCursoX(FILE *arq, int X, int Y, REGISTRO tabela[MAX])
 
     fseek(arq,-sizeof(REGISTRO),SEEK_CUR);
     fwrite(&r,sizeof(REGISTRO),1,arq);
+
+    //nao precisa alterar a tabela, pq ela nao tem o campo curso
 
     return true;
 }
