@@ -1,3 +1,5 @@
+// 1. Escreva  uma  função  para  inserir  um  novo  registro  r  no  arquivo,  tomando  cuidado  para  evitar 
+// chaves duplicadas (verifique quais índices precisam ser atualizados).
 #include <stdio.h>
 #define MAX 5
 
@@ -27,21 +29,19 @@ NO* chavesCurso(int curso);
 NO* chavesEstado(int estado);
 
 bool inserirRegistro(FILE *arq, REGISTRO tabela1[MAX], 
-NO tabela2[MAX], REGISTRO* r, int* prox)
+NO tabela2[MAX], REGISTRO r, int end)
 {
     if(!arq) return false;
 
-    int end = buscarEndereco1(tabela1,r->NroUSP);
+    int end = buscarEndereco1(tabela1,r.NroUSP);
 
     if (end != -1) return false;
-
-    end = *prox;
 
     fseek(arq,sizeof(REGISTRO)*end,SEEK_SET);
     fwrite(&r,sizeof(REGISTRO),1,arq);
 
-    bool um = inserirIndice1(tabela1,r->NroUSP,end);
-    bool dois = inserirIndice2(tabela2,r->NroUSP,end);
+    bool um = inserirIndice1(tabela1,r.NroUSP,end);
+    bool dois = inserirIndice2(tabela2,r.NroUSP,end);
 
     if(!um ||!dois) return false;
 

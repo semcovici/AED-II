@@ -1,3 +1,5 @@
+// 6. Escreva uma função para alterar o curso de um registro de nroUSP X para o curso Y (verifique quais 
+// índices precisam ser atualizados). 
 #include <stdio.h>
 #define MAX 5
 

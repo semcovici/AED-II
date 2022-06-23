@@ -1,3 +1,5 @@
+// 4. Escreva uma função para excluir todos os registros do curso X (verifique quais índices precisam ser 
+// atualizados).
 #include <stdio.h>
 #define MAX 5
 
@@ -26,8 +28,8 @@ int excluirIndice2(NO tabela[MAX], int nroUSP);
 NO* chavesCurso(int curso);
 NO* chavesEstado(int estado);
 
-bool inserirRegistro(FILE *arq, REGISTRO tabela1[MAX], 
-NO tabela2[MAX], int X, int* prox)
+bool excluirCursoX(FILE *arq, REGISTRO tabela1[MAX], 
+NO tabela2[MAX], int X)
 {
     if(!arq) return false;
 

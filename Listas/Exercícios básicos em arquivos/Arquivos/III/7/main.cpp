@@ -1,3 +1,5 @@
+// 7. Escreva uma função para alterar o registro de nroUSP X para o nroUSP Y se possível (verifique quais 
+// índices precisam ser atualizados).  
 #include <stdio.h>
 #define MAX 5
 
@@ -26,8 +28,8 @@ int excluirIndice2(NO tabela[MAX], int nroUSP);
 NO* chavesCurso(int curso);
 NO* chavesEstado(int estado);
 
-bool inserirRegistro(FILE *arq, REGISTRO tabela1[MAX], 
-NO tabela2[MAX], NO tabela3[MAX], int X, int Y, int* prox)
+bool alterarNroUSP(FILE *arq, REGISTRO tabela1[MAX], 
+NO tabela2[MAX], NO tabela3[MAX], int X, int Y)
 {
     if(!arq) return false;
 

@@ -1,3 +1,5 @@
+// 5. Escreva uma função para alterar a idade atual de um registro de nroUSP X para a idade Y (verifique 
+// quais índices precisam ser atualizados).
 #include <stdio.h>
 #define MAX 5
 
@@ -27,7 +29,7 @@ NO* chavesCurso(int curso);
 NO* chavesEstado(int estado);
 
 bool inserirRegistro(FILE *arq, REGISTRO tabela1[MAX], 
-NO tabela2[MAX], int X, int Y, int* prox)
+NO tabela2[MAX], int X, int Y)
 {
     if(!arq) return false;
 
